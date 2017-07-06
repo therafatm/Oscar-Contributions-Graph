@@ -1,5 +1,4 @@
 # Oscar-Contributions-Graph
-Oscar-EMR contributions graph
 
 Tool for a class project that talks to the github API and uses Highcharts.js to draw out a contributions chart
 for the OSCAR-EMR clinical management system. 
