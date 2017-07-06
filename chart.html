@@ -1,0 +1,74 @@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+
+<script type="text/javascript">
+    fetch("https://api.github.com/repos/scoophealth/oscar/stats/contributors")
+        .then(function(res) {
+            return res.json();
+        }).then(function(json) {
+            parseData(json);
+        });
+
+    function parseData(data){
+        var categories = [];
+        var values = [];
+        var d = {};
+
+        data.forEach((contributor)=>{
+            categories.push(contributor.author.login);
+            values.push(contributor.total);
+        });
+        drawChart(categories, values);
+    }
+
+    function drawChart(c, v){
+        Highcharts.chart('container', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'Git Code Contributions for Oscar'
+            },
+            xAxis: {
+                categories: c,
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Code commits',
+                    align: 'high'
+                }
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Total Commits',
+                data: v
+            }]
+        });
+    };
+</script>
